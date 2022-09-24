@@ -1,0 +1,26 @@
+# action.yml
+name: "iCal Event Action"
+description: "Get calendar events in iCal format"
+inputs:
+  ical-url:
+    description: "Url of ical"
+    required: true
+  time-offset:
+    description: "Calendar time offset (hour)"
+    required: false
+    default: 0
+  datetime:
+    description: "Date and time in isoformat"
+    required: false
+outputs:
+  events:
+    description: "JSON string of events"
+  has-events:
+    description: "Boolean value"
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.ical-url }}
+    - ${{ inputs.time-offset }}
+    - ${{ inputs.datetime }}
