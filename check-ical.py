@@ -2,6 +2,7 @@ import argparse
 from datetime import datetime, timezone, timedelta
 import json
 from sys import stderr
+from os import environ
 
 import ics
 import requests
@@ -37,8 +38,9 @@ def main(url, dt, offset):
                 "begin": e.begin.datetime.isoformat(),
                 "end": e.end.datetime.isoformat(),
             })
-    print("::set-output name=events::{}".format(json.dumps(events, ensure_ascii=False)))
-    print("::set-output name=has-events::{}".format(json.dumps(bool(events))))
+    file = open(environ.get("GITHUB_OUTPUT"), "w+")
+    print("events={}".format(json.dumps(events, ensure_ascii=False)), file=file)
+    print("has-events={}".format(json.dumps(bool(events))), file=file)
 
 
 if __name__ == "__main__":
